@@ -118,3 +118,16 @@ func (p *Program) String() string {
 	}
 	return out.String()
 }
+
+type IntegerLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (it *IntegerLiteral) expressionNode() {}
+func (it *IntegerLiteral) TokenLiteral() string {
+	return it.Token.Literal
+}
+func (it *IntegerLiteral) String() string {
+	return it.Token.Literal
+}
