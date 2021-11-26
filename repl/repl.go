@@ -31,6 +31,5 @@ func Start(in io.Reader, out io.Writer) {
 				fmt.Fprintf(out, "%+v\n", tok)
 			}
 		}
-
 	}
 }
