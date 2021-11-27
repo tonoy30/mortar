@@ -11,5 +11,5 @@
 -   [x] closures
 -   [x] a string data structure
 
--   [] an array data structure
--   [] a hash data structure
+-   [ ] an array data structure
+-   [ ] a hash data structure
