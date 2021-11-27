@@ -1,4 +1,6 @@
-# Expressed as a list of features, Mortar has the following:
+# The Mortar Programming Language 
+
+## Expressed as a list of features, Mortar has the following:
 
 -   C-like syntax
 -   variable bindings
