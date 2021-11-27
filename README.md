@@ -2,13 +2,14 @@
 
 ## Expressed as a list of features, Mortar has the following:
 
--   C-like syntax
--   variable bindings
--   integers and booleans
--   arithmetic expressions
--   built-in functions
--   first-class and higher-order functions
--   closures
--   a string data structure
--   an array data structure
--   a hash data structure
+-   [x] C-like syntax
+-   [x] variable bindings
+-   [x] integers and booleans
+-   [x] arithmetic expressions
+-   [x] built-in functions
+-   [x] first-class and higher-order functions
+-   [x] closures
+-   [x] a string data structure
+
+-   [] an array data structure
+-   [] a hash data structure
