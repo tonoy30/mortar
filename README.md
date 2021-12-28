@@ -12,5 +12,5 @@
 - [x] a string data structure
 
 - [x] an array data structure
-  - [] add builtin function for array
+  - [ ] add builtin function for array
 - [ ] a hash data structure
