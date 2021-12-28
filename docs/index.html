@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <meta name="description" content="Description">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <link id="pagestyle" rel="stylesheet" href="">
 </head>
 <body>
   <div id="app"></div>
@@ -15,6 +15,15 @@
       name: 'The Mortar Programming Language',
       repo: 'https://github.com/tonoy30/mortar'
     }
+    function swapStyleSheet(sheet) {
+      document.getElementById("pagestyle").setAttribute("href", sheet);
+    }
+    let theme = "//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css"
+    const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (darkThemeMq.matches) {
+      theme = "//cdn.jsdelivr.net/npm/docsify@4/lib/themes/dark.css"
+    }
+    window.onload = () => swapStyleSheet(theme)
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
