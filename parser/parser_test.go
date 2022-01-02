@@ -581,7 +581,7 @@ func TestParsingEmptyDictLiteral(t *testing.T) {
 	}
 }
 func TestParsingDictLiteralsStringKeys(t *testing.T) {
-	input := `{"one": 1, "two": 2, "three": 3}`
+	input := `{"one": 0 + 1, "two": 10 - 8, "three": 15 / 5}`
 	l := lexer.New(input)
 	p := New(l)
 	program := p.ParseProgram()
@@ -595,17 +595,29 @@ func TestParsingDictLiteralsStringKeys(t *testing.T) {
 		t.Errorf("hash.Pairs has wrong length. got=%d", len(dict.Pairs))
 	}
 
-	expected := map[string]int64{
-		"one":   1,
-		"two":   2,
-		"three": 3,
+	tests := map[string]func(ast.Expression){
+		"one": func(e ast.Expression) {
+			testInfixExpression(t, e, 0, "+", 1)
+		},
+		"two": func(e ast.Expression) {
+			testInfixExpression(t, e, 10, "-", 8)
+		},
+		"three": func(e ast.Expression) {
+			testInfixExpression(t, e, 15, "/", 5)
+		},
 	}
+
 	for key, value := range dict.Pairs {
 		literal, ok := key.(*ast.StringLiteral)
 		if !ok {
 			t.Errorf("key is not ast.StringLiteral. got=%T", key)
+			continue
 		}
-		expectedValue := expected[literal.String()]
-		testIntegerLiteral(t, value, expectedValue)
+		testFunc, ok := tests[literal.String()]
+		if !ok {
+			t.Errorf("No test function for key %q found", literal.String())
+			continue
+		}
+		testFunc(value)
 	}
 }

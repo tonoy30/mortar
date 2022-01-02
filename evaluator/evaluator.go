@@ -108,9 +108,32 @@ func Eval(node ast.Node, env *object.Environment) object.Object {
 			return index
 		}
 		return evalIndexExpression(left, index)
+	case *ast.DictLiteral:
+		return evalDictLiteral(node, env)
 	}
 
 	return nil
+}
+
+func evalDictLiteral(node *ast.DictLiteral, env *object.Environment) object.Object {
+	pairs := make(map[object.DictKey]object.DictPair)
+	for keyNode, valueNode := range node.Pairs {
+		key := Eval(keyNode, env)
+		if isError(key) {
+			return key
+		}
+		hashKey, ok := key.(object.Dictable)
+		if !ok {
+			return newError("unusable as hash key: %s", key.Type())
+		}
+		value := Eval(valueNode, env)
+		if isError(value) {
+			return value
+		}
+		hashed := hashKey.DictKey()
+		pairs[hashed] = object.DictPair{Key: key, Value: value}
+	}
+	return &object.Dict{Pairs: pairs}
 }
 
 func evalProgram(program *ast.Program, env *object.Environment) object.Object {
@@ -361,9 +384,24 @@ func evalIndexExpression(left, index object.Object) object.Object {
 	switch {
 	case left.Type() == object.ARRAY_OBJ && index.Type() == object.INTEGER_OBJ:
 		return evalArrayIndexExpression(left, index)
+	case left.Type() == object.DICT_OBJ:
+		return evalHashIndexExpression(left, index)
 	default:
 		return newError("index operator not supported: %s", left.Type())
 	}
+}
+
+func evalHashIndexExpression(dict, index object.Object) object.Object {
+	dictObject := dict.(*object.Dict)
+	key, ok := index.(object.Dictable)
+	if !ok {
+		return newError("unusable as dict key: %s", index.Type())
+	}
+	pair, ok := dictObject.Pairs[key.DictKey()]
+	if !ok {
+		return NULL
+	}
+	return pair.Value
 }
 func evalArrayIndexExpression(array, index object.Object) object.Object {
 	arrayObject := array.(*object.Array)

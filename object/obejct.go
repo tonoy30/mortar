@@ -3,6 +3,7 @@ package object
 import (
 	"bytes"
 	"fmt"
+	"hash/fnv"
 	"mortar/ast"
 	"strings"
 )
@@ -20,6 +21,7 @@ const (
 	STRING_OBJ       = "STRING"
 	BUILTIN_OBJ      = "BUILTIN"
 	ARRAY_OBJ        = "ARRAY"
+	DICT_OBJ         = "DICT"
 )
 
 type Object interface {
@@ -141,4 +143,56 @@ func (ao *Array) Inspect() string {
 	out.WriteString(strings.Join(elements, ", "))
 	out.WriteString("]")
 	return out.String()
+}
+
+type DictPair struct {
+	Key   Object
+	Value Object
+}
+type Dict struct {
+	Pairs map[DictKey]DictPair
+}
+
+func (d *Dict) Type() ObjectType {
+	return DICT_OBJ
+}
+func (d *Dict) Inspect() string {
+	var out bytes.Buffer
+	pairs := []string{}
+	for _, pair := range d.Pairs {
+		pairs = append(pairs, fmt.Sprintf("%s: %s",
+			pair.Key.Inspect(), pair.Value.Inspect()))
+	}
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ", "))
+	out.WriteString("}")
+	return out.String()
+}
+
+type Dictable interface {
+	DictKey() DictKey
+}
+
+type DictKey struct {
+	Type  ObjectType
+	Value uint64
+}
+
+func (b *Boolean) DictKey() DictKey {
+	var value uint64
+	if b.Value {
+		value = 1
+	} else {
+		value = 0
+	}
+	return DictKey{Type: b.Type(), Value: value}
+}
+
+func (i *Integer) DictKey() DictKey {
+	return DictKey{Type: i.Type(), Value: uint64(i.Value)}
+}
+func (s *String) DictKey() DictKey {
+	h := fnv.New64a()
+	h.Write([]byte(s.Value))
+	return DictKey{Type: s.Type(), Value: h.Sum64()}
 }
