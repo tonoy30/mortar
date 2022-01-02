@@ -331,3 +331,22 @@ func (ie *IndexExpression) String() string {
 	out.WriteString("])")
 	return out.String()
 }
+
+type DictLiteral struct {
+	Token token.Token // The ':' token
+	Pairs map[Expression]Expression
+}
+
+func (d *DictLiteral) expressionNode()      {}
+func (d *DictLiteral) TokenLiteral() string { return d.Token.Literal }
+func (d *DictLiteral) String() string {
+	var out bytes.Buffer
+	pairs := []string{}
+	for key, value := range d.Pairs {
+		pairs = append(pairs, key.String()+":"+value.String())
+	}
+	out.WriteString("{")
+	out.WriteString(strings.Join(pairs, ", "))
+	out.WriteString("}")
+	return out.String()
+}
