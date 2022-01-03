@@ -1,5 +1,5 @@
 # The Mortar Programming Language
-
+[![CircleCI](https://circleci.com/gh/tonoy30/mortar/tree/main.svg?style=svg)](https://circleci.com/gh/tonoy30/mortar/tree/main)
 ## Expressed as a list of features, Mortar has the following:
 
 ```
