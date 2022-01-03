@@ -215,7 +215,7 @@ if (10 > 1) {
 		},
 		{
 			`{"name": "Monkey"}[fn(x) { x }];`,
-			"unusable as hash key: FUNCTION",
+			"unusable as dict key: FUNCTION",
 		},
 	}
 
