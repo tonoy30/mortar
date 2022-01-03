@@ -1,16 +1,25 @@
 # The Mortar Programming Language
 
-## Expressed as a list of features, Mortar has the following:
+# Introduction
+This is a reference manual for the Mortar programming language.
 
-- [x] C-like syntax
-- [x] variable bindings
-- [x] integers and booleans
-- [x] arithmetic expressions
-- [x] built-in functions
-- [x] first-class and higher-order functions
-- [x] closures
-- [x] a string data structure
+It supports mathematical expressions, variable bindings, functions, and the application of those functions, conditionals, return statements and even advanced concepts like higher-order functions and closures.
+And then there are the different data types: integers, booleans, strings, arrays, and dictionaries.
 
-- [x] an array data structure
-  - [x] add builtin function for array
-- [ ] a hash data structure
+This morter interpreter is written on top of [golang](https://go.dev/).
+
+# Variables
+A variable is a storage location for holding a value.
+
+## Variable Declaration
+A variable declaration creates one variable binds corresponding identifiers to them.
+```
+let <identifier> = <expression>;
+
+let x = 10;
+let y = 15;
+
+let add = fn(a, b) { 
+  return a + b;
+};
+```
